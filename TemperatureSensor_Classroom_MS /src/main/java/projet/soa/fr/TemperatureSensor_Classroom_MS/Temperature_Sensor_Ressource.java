@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 @RestController
-@RequestMapping("/api/temperature_sensors")
+@RequestMapping("/temperature_sensors")
 public class Temperature_Sensor_Ressource {
 
     private final Map<String, Temperature_Sensor> sensors = new HashMap<>();

@@ -9,7 +9,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/api/presence")
+@RequestMapping("/presence")
 public class PresenceSensor_Ressource {
 
 
