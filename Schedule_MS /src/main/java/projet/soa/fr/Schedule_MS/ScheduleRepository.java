@@ -15,6 +15,12 @@ public interface ScheduleRepository extends JpaRepository<Course, Long> {
             LocalDateTime start,
             LocalDateTime end
     );
+
+    Course findFirstByRoomAndStartTimeLessThanEqualAndEndTimeGreaterThan(
+            String room, 
+            LocalDateTime now1, 
+            LocalDateTime now2
+        );
     
     Optional<Course> findFirstByRoomAndStartTimeAfterOrderByStartTimeAsc(
             String room,
