@@ -10,14 +10,14 @@ public class NextCourseResponse {
 
     public NextCourseResponse(Course course, LocalDateTime now) {
         this.course = course;
-        this.deltaMinutes = Duration.between(now, course.getStartTime()).toMinutes();
+        
+        if (course.getStartTime().isBefore(now) || course.getStartTime().isEqual(now)) {
+            this.deltaMinutes = 0;
+        } else {
+            this.deltaMinutes = Duration.between(now, course.getStartTime()).toMinutes();
+        }
     }
 
-    public Course getCourse() {
-        return course;
-    }
-
-    public long getDeltaMinutes() {
-        return deltaMinutes;
-    }
+    public Course getCourse() { return course; }
+    public long getDeltaMinutes() { return deltaMinutes; }
 }
