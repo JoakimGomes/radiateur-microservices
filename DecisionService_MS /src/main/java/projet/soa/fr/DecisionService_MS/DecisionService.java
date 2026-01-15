@@ -16,11 +16,11 @@ public class DecisionService {
         this.scheduleClient = s;
     }
 
-    public DecisionResponse evaluate(Long classId) {
+    public DecisionResponse evaluate(String classroom) {
 
-        boolean presence = presenceClient.isSomeonePresent(classId);
-        double currentTemp = temperatureClient.getCurrentTemperature(classId);
-        int minutesBeforeCourse = scheduleClient.minutesBeforeNextCourse(classId);
+        boolean presence = presenceClient.isSomeonePresent(classroom);
+        double currentTemp = temperatureClient.getCurrentTemperature(classroom);
+        long minutesBeforeCourse = scheduleClient.minutesBeforeNextCourse(classroom);
 
         // Aucun cours dans les 2h
         if (minutesBeforeCourse == -1 || minutesBeforeCourse > 120) {

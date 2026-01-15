@@ -12,8 +12,8 @@ public class DecisionService_Ressource {
         this.decisionService = decisionService;
     }
 
-    @GetMapping("/heating")
-    public DecisionResponse getHeatingDecision(@RequestParam Long classId) {
-        return decisionService.evaluate(classId);
+    @GetMapping("/heating/{classroom}")
+    public DecisionResponse getHeatingDecision(@RequestParam String classroom) {
+        return decisionService.evaluate(classroom);
     }
 }
