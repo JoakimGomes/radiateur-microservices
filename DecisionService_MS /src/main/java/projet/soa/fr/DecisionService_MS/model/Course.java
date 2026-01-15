@@ -50,4 +50,16 @@ public class Course {
     public LocalDateTime getEndTime() {
         return endTime;
     }
+    
+    public void setRoom(String room) {
+        this.room = room;
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
+    }
 }

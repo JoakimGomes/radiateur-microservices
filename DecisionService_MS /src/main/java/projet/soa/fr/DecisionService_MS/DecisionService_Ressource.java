@@ -12,7 +12,7 @@ public class DecisionService_Ressource {
         this.decisionService = decisionService;
     }
 
-    @GetMapping("/heating/{classroom}")
+    @GetMapping("/heating")
     public DecisionResponse getHeatingDecision(@RequestParam String classroom) {
         return decisionService.evaluate(classroom);
     }

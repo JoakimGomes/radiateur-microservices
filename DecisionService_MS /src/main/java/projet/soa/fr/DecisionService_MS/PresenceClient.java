@@ -7,14 +7,16 @@ import projet.soa.fr.DecisionService_MS.model.PresenceSensor_Classroom;
 
 @Component
 public class PresenceClient {
-
     private final RestTemplate restTemplate = new RestTemplate();
-    private final String url = "http://localhost:8086/presence/";
+    private final String url = "http://localhost:8086/presence";
 
     public boolean isSomeonePresent(String classroom) {
-    	PresenceSensor_Classroom Presence;
-    	
-        Presence = restTemplate.getForObject(url + classroom, PresenceSensor_Classroom.class);
-        return Presence.isPresenceDetected();
+        String urlAppel = url + "/check?room=" + classroom;
+        try {
+            Boolean result = restTemplate.getForObject(urlAppel, Boolean.class);
+            return result != null && result;
+        } catch (Exception e) {
+            return false; 
+        }
     }
 }

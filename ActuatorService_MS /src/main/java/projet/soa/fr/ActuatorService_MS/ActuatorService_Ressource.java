@@ -1,7 +1,7 @@
 package projet.soa.fr.ActuatorService_MS;
 
-
 import org.springframework.web.bind.annotation.*;
+import projet.soa.fr.ActuatorService_MS.ActuatorService.ActuatorState;
 
 @RestController
 @RequestMapping("/actuator")
@@ -13,22 +13,20 @@ public class ActuatorService_Ressource {
         this.actuatorService = actuatorService;
     }
 
-    /**
-     * Applique la décision depuis le microservice Decision
-     */
-    @PostMapping("/update/{classId}")
-    public String updateFromDecision(@PathVariable Long classId) {
-        actuatorService.applyDecisionFromDecisionService(classId);
-        return "Actuator mis à jour pour classId=" + classId;
+    @PostMapping("/update")
+    public String updateFromDecision(@RequestParam String classroom) {
+        actuatorService.applyDecisionFromDecisionService(classroom);
+        return "Demande de mise à jour envoyée pour la salle : " + classroom;
     }
 
-    /**
-     * Retourne l'état courant de l'actuator
-     */
+
     @GetMapping("/state")
-    public String getState() {
-        return "heatingOn=" + actuatorService.isHeatingOn() +
-                " | mode=" + actuatorService.getMode() +
-                " | targetTemperature=" + actuatorService.getTargetTemperature();
+    public ActuatorState getState(@RequestParam String classroom) {
+        ActuatorState state = actuatorService.getActuatorState(classroom);
+        
+        if (state == null) {
+            return new ActuatorState(false, "UNKNOWN", 0.0);
+        }
+        return state;
     }
 }

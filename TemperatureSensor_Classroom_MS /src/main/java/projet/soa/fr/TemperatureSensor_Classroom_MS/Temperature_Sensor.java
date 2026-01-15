@@ -7,15 +7,15 @@ import java.time.LocalDateTime;
 public class Temperature_Sensor {
 
     private String id;
-    private String location;
+    private String classroom;
     private double temperature;
     private LocalDateTime timestamp;
 
     public Temperature_Sensor() {}
 
-    public Temperature_Sensor(String id, String location, double temperature, LocalDateTime timestamp) {
+    public Temperature_Sensor(String id, String classroom, double temperature, LocalDateTime timestamp) {
         this.id = id;
-        this.location = location;
+        this.classroom = classroom;
         this.temperature = temperature;
         this.timestamp = timestamp;
     }
@@ -31,11 +31,11 @@ public class Temperature_Sensor {
     }
 
     public String getLocation() {
-        return location;
+        return classroom;
     }
 
     public void setLocation(String location) {
-        this.location = location;
+        this.classroom = location;
     }
 
     public double getTemperature() {

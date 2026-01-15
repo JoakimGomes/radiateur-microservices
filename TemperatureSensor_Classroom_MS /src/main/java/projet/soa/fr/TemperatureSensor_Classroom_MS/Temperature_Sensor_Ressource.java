@@ -10,6 +10,7 @@ import java.util.*;
 public class Temperature_Sensor_Ressource {
 
     private final Map<String, Temperature_Sensor> sensors = new HashMap<>();
+	private Long idCounter = 1L;
 
     // ------------------- GET ALL -------------------
     @GetMapping
@@ -23,11 +24,21 @@ public class Temperature_Sensor_Ressource {
         return sensors.get(id);
     }
 
+    @GetMapping("/search")
+    public Double getTemperatureByRoom(@RequestParam String room) {
+        return sensors.values().stream()
+                .filter(s -> s.getLocation().equalsIgnoreCase(room))
+                .map(Temperature_Sensor::getTemperature)
+                .findFirst()
+                .orElse(null);
+    }
+    
     // ------------------- CREATE -------------------
     @PostMapping(consumes = "application/json" , produces = "application/json")
     public Temperature_Sensor createSensor(@RequestBody Temperature_Sensor sensor) {
     	if (sensor.getId() == null || sensor.getId().isEmpty()) {
-    	    sensor.setId(UUID.randomUUID().toString());
+    	    sensor.setId(idCounter.toString());
+    	    idCounter++;
     	}
     	sensor.setTimestamp(LocalDateTime.now());
         sensors.put(sensor.getId(), sensor);

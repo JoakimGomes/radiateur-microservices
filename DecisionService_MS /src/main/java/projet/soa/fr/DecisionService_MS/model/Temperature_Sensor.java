@@ -20,8 +20,6 @@ public class Temperature_Sensor {
         this.timestamp = timestamp;
     }
 
-    // -------- GETTERS & SETTERS --------
-
     public String getId() {
         return id;
     }

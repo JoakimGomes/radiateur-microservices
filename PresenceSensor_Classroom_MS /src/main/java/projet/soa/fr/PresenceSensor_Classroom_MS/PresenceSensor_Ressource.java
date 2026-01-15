@@ -31,6 +31,12 @@ public class PresenceSensor_Ressource {
 		return detections;
 	}
 	
+	@GetMapping("/check")
+	public boolean checkPresence(@RequestParam String room) {
+	    return detections.stream()
+	            .filter(s -> s.getClassroom().equalsIgnoreCase(room)) 
+	            .anyMatch(PresenceSensor_Classroom::isPresenceDetected);
+	}
 	
 	@GetMapping("/{id}")
 	public PresenceSensor_Classroom getDetection(@PathVariable Long id) {
@@ -41,5 +47,11 @@ public class PresenceSensor_Ressource {
 	public List<PresenceSensor_Classroom> getDetected() {
 		return detections.stream().filter(PresenceSensor_Classroom::isPresenceDetected).toList();
 	}
+	
+	@DeleteMapping("/{classroom}")
+	public boolean deletePresenceSensor(@PathVariable String classroom) {
+		return detections.remove(classroom);
+	}
+	
 	
 }

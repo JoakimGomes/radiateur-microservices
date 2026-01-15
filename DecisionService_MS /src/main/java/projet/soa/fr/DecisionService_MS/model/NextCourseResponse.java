@@ -1,23 +1,17 @@
 package projet.soa.fr.DecisionService_MS.model;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
-
 public class NextCourseResponse {
 
-    private Course course;
-    private long deltaMinutes;
+    private Long deltaMinutes;
 
-    public NextCourseResponse(Course course, LocalDateTime now) {
-        this.course = course;
-        this.deltaMinutes = Duration.between(now, course.getStartTime()).toMinutes();
+    public NextCourseResponse() {
     }
 
-    public Course getCourse() {
-        return course;
-    }
-
-    public long getDeltaMinutes() {
+    public Long getDeltaMinutes() {
         return deltaMinutes;
+    }
+
+    public void setDeltaMinutes(Long deltaMinutes) {
+        this.deltaMinutes = deltaMinutes;
     }
 }

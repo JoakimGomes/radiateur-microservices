@@ -1,52 +1,66 @@
 package projet.soa.fr.ActuatorService_MS;
 
-
-import projet.soa.fr.DecisionService_MS.DecisionResponse;
-
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class ActuatorService {
 
-    private boolean heatingOn = false;
-    private String mode = "OFF"; // OFF, PREHEAT, NORMAL
-    private double targetTemperature = 0;
+    public static class ActuatorState {
+        public boolean heatingOn;
+        public String mode;
+        public double targetTemperature;
 
+        public ActuatorState(boolean heatingOn, String mode, double targetTemperature) {
+            this.heatingOn = heatingOn;
+            this.mode = mode;
+            this.targetTemperature = targetTemperature;
+        }
+        public ActuatorState() {} 
+    }
+
+    public static class DecisionResponse {
+        public boolean heating;
+        public String mode;
+        public double currentTemp;
+    }
+
+    private final Map<String, ActuatorState> actuators = new ConcurrentHashMap<>();
+    
     private final RestTemplate restTemplate = new RestTemplate();
+    
+    private final String decisionUrl = "http://localhost:8088/decision/heating";
 
-    // URL DecisionService (à adapter selon ton port)
-    private final String decisionUrl = "http://localhost:8088/decision/heating?classId=";
+    public void applyDecisionFromDecisionService(String classroom) {
+        String url = decisionUrl + "?classroom=" + classroom;
 
-    /**
-     * Met à jour l’état du chauffage en récupérant directement la décision
-     * depuis le microservice Decision
-     */
-    public void applyDecisionFromDecisionService(Long classId) {
+        try {
+            DecisionResponse response = restTemplate.getForObject(url, DecisionResponse.class);
 
-        DecisionResponse decision = restTemplate.getForObject(decisionUrl + classId, DecisionResponse.class);
+            if (response != null) {
+                double targetTemp = 0.0;
+                if ("PREHEAT".equals(response.mode)) targetTemp = 22.0;
+                else if ("NORMAL".equals(response.mode)) targetTemp = 19.0;
 
-        if (decision != null) {
-            this.heatingOn = decision.isHeatingOn();
-            this.mode = decision.getMode();
-            this.targetTemperature = decision.getTargetTemperature();
+                ActuatorState newState = new ActuatorState(
+                        response.heating,
+                        response.mode,
+                        targetTemp
+                );
 
-            System.out.println("Actuator mis à jour : heatingOn=" + heatingOn +
-                    " | mode=" + mode +
-                    " | targetTemp=" + targetTemperature);
+                actuators.put(classroom, newState);
+                
+                System.out.println("UPDATE salle " + classroom + " -> " + response.mode);
+            }
+        } catch (Exception e) {
+            System.err.println("Erreur appel Decision pour " + classroom + ": " + e.getMessage());
         }
     }
 
-    // GETTERS
-    public boolean isHeatingOn() {
-        return heatingOn;
-    }
-
-    public String getMode() {
-        return mode;
-    }
-
-    public double getTargetTemperature() {
-        return targetTemperature;
+    public ActuatorState getActuatorState(String classroom) {
+        return actuators.get(classroom);
     }
 }
