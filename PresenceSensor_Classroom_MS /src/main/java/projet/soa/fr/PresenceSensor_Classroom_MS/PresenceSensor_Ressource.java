@@ -47,6 +47,21 @@ public class PresenceSensor_Ressource {
 	public List<PresenceSensor_Classroom> getDetected() {
 		return detections.stream().filter(PresenceSensor_Classroom::isPresenceDetected).toList();
 	}
+
+	@PutMapping("/{id})
+	public PresenceSensor_Classroom updateSensor(@PathVariable String id, @RequestBody PresenceSensor_Classroom updated) {
+        PresenceSensor_Classroom existing = sensors.get(id);
+
+        if (existing == null) {
+            return null;
+        }
+
+        existing.setLocation(updated.getLocation());
+        existing.setTemperature(updated.getTemperature());
+        existing.setTimestamp(LocalDateTime.now());
+
+        return existing;
+    }
 	
 	@DeleteMapping("/{classroom}")
 	public boolean deletePresenceSensor(@PathVariable String classroom) {
