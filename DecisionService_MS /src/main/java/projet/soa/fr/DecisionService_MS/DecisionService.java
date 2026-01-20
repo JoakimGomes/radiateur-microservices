@@ -29,11 +29,23 @@ public class DecisionService {
 
         // Cours 
         if (minutesBeforeCourse == 0) {
-            return new DecisionResponse(true, "NORMAL", 21.0);
+            double targetTemp = 21.0;
+
+            if (currentTemp >= targetTemp) {
+                return new DecisionResponse(false, "OFF", currentTemp);
+            }
+
+            return new DecisionResponse(true, "NORMAL", targetTemp);
         }
         // Pré-chauffage
         if (minutesBeforeCourse <= 30 && minutesBeforeCourse>0) {
-            return new DecisionResponse(true, "PREHEAT", 20.5);
+            double targetTemp = 20.5;
+
+            if (currentTemp >= targetTemp) {
+                return new DecisionResponse(false, "OFF", currentTemp);
+            }
+
+            return new DecisionResponse(true, "PREHEAT", targetTemp);
         }
 
         // Présence sans cours
