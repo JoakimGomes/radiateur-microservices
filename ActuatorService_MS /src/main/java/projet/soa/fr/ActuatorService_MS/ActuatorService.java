@@ -42,8 +42,8 @@ public class ActuatorService {
 
             if (response != null) {
                 double targetTemp = 0.0;
-                if ("PREHEAT".equals(response.mode)) targetTemp = 22.0;
-                else if ("NORMAL".equals(response.mode)) targetTemp = 19.0;
+                if ("PREHEAT".equals(response.mode)) targetTemp = 20.5;
+                else if ("NORMAL".equals(response.mode)) targetTemp = 21.0;
 
                 ActuatorState newState = new ActuatorState(
                         response.heating,
