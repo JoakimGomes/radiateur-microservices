@@ -26,4 +26,4 @@ L'architecture de l'application est organisée en 5 microservices :
 
 ## Architecture du système
 
-![Architecture des microservices](docs/service-architecture.png)
+![Architecture des microservices](service-architecture.png)
